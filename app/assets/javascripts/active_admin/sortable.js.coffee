@@ -52,21 +52,21 @@ $ ->
       toleranceElement: '> div'
       isTree: true
       startCollapsed: $this.data("start-collapsed")
-      update: ->
-        $this.nestedSortable("disable")
-        $.ajax
-          url: $this.data("sortable-url")
-          type: "post"
-          data: $this.nestedSortable("serialize")
-        .always ->
-          $this.find('.item').each (index) ->
-            if index % 2
-              $(this).removeClass('odd').addClass('even')
-            else
-              $(this).removeClass('even').addClass('odd')
-          $this.nestedSortable("enable")
-          ActiveAdminSortableEvent.trigger('ajaxAlways')
-        .done ->
-          ActiveAdminSortableEvent.trigger('ajaxDone')
-        .fail ->
-          ActiveAdminSortableEvent.trigger('ajaxFail')
+      # update: ->
+      #   $this.nestedSortable("disable")
+      #   $.ajax
+      #     url: $this.data("sortable-url")
+      #     type: "post"
+      #     data: $this.nestedSortable("serialize")
+      #   .always ->
+      #     $this.find('.item').each (index) ->
+      #       if index % 2
+      #         $(this).removeClass('odd').addClass('even')
+      #       else
+      #         $(this).removeClass('even').addClass('odd')
+      #     $this.nestedSortable("enable")
+      #     ActiveAdminSortableEvent.trigger('ajaxAlways')
+      #   .done ->
+      #     ActiveAdminSortableEvent.trigger('ajaxDone')
+      #   .fail ->
+      #     ActiveAdminSortableEvent.trigger('ajaxFail')
