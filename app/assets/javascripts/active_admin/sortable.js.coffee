@@ -1,6 +1,28 @@
 #= require jquery-ui/sortable
 #= require jquery.mjs.nestedSortable
 
+window.saveTree = ->
+  item = $('odd:first')
+  item.nestedSortable("disable")
+  $.ajax
+      url: $this.data("sortable-url")
+      type: "post"
+      data: $this.nestedSortable("serialize")
+    .always ->
+      item.find('.item').each (index) ->
+        if index % 2
+          item.removeClass('odd').addClass('even')
+        else
+          item.removeClass('even').addClass('odd')
+      $this.nestedSortable("enable")
+      ActiveAdminSortableEvent.trigger('ajaxAlways')
+    .done ->
+      ActiveAdminSortableEvent.trigger('ajaxDone')
+    .fail ->
+      ActiveAdminSortableEvent.trigger('ajaxFail')
+
+
+
 window.ActiveAdminSortableEvent = do ->
   eventToListeners = {}
 
@@ -53,20 +75,20 @@ $ ->
       isTree: true
       startCollapsed: $this.data("start-collapsed")
       # update: ->
-      #   $this.nestedSortable("disable")
-      #   $.ajax
-      #     url: $this.data("sortable-url")
-      #     type: "post"
-      #     data: $this.nestedSortable("serialize")
-      #   .always ->
-      #     $this.find('.item').each (index) ->
-      #       if index % 2
-      #         $(this).removeClass('odd').addClass('even')
-      #       else
-      #         $(this).removeClass('even').addClass('odd')
-      #     $this.nestedSortable("enable")
-      #     ActiveAdminSortableEvent.trigger('ajaxAlways')
-      #   .done ->
-      #     ActiveAdminSortableEvent.trigger('ajaxDone')
-      #   .fail ->
-      #     ActiveAdminSortableEvent.trigger('ajaxFail')
+        # $this.nestedSortable("disable")
+        # $.ajax
+        #   url: $this.data("sortable-url")
+        #   type: "post"
+        #   data: $this.nestedSortable("serialize")
+        # .always ->
+        #   $this.find('.item').each (index) ->
+        #     if index % 2
+        #       $(this).removeClass('odd').addClass('even')
+        #     else
+        #       $(this).removeClass('even').addClass('odd')
+        #   $this.nestedSortable("enable")
+        #   ActiveAdminSortableEvent.trigger('ajaxAlways')
+        # .done ->
+        #   ActiveAdminSortableEvent.trigger('ajaxDone')
+        # .fail ->
+        #   ActiveAdminSortableEvent.trigger('ajaxFail')
