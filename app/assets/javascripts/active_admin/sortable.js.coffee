@@ -5,16 +5,16 @@ window.saveTree = ->
   item = $('odd:first')
   item.nestedSortable("disable")
   $.ajax
-      url: $this.data("sortable-url")
+      url: item.data("sortable-url")
       type: "post"
-      data: $this.nestedSortable("serialize")
+      data: item.nestedSortable("serialize")
     .always ->
       item.find('.item').each (index) ->
         if index % 2
           item.removeClass('odd').addClass('even')
         else
           item.removeClass('even').addClass('odd')
-      $this.nestedSortable("enable")
+      item.nestedSortable("enable")
       ActiveAdminSortableEvent.trigger('ajaxAlways')
     .done ->
       ActiveAdminSortableEvent.trigger('ajaxDone')
