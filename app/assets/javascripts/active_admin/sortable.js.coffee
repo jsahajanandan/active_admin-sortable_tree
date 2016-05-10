@@ -17,8 +17,10 @@ window.saveTree = ->
       item.nestedSortable("enable")
       ActiveAdminSortableEvent.trigger('ajaxAlways')
     .done ->
+      alert 'Saved!'
       ActiveAdminSortableEvent.trigger('ajaxDone')
     .fail ->
+      alert 'NOT SAVED!'
       ActiveAdminSortableEvent.trigger('ajaxFail')
 
 
