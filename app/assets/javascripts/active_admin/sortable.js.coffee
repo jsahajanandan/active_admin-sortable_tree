@@ -2,7 +2,7 @@
 #= require jquery.mjs.nestedSortable
 
 window.saveTree = ->
-  item = $('index_as_sortable:first')
+  item = $('.index_as_sortable [data-sortable-type]').first();
   item.nestedSortable("disable")
   $.ajax
       url: item.data("sortable-url")
