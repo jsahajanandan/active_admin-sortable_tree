@@ -24,18 +24,18 @@ module ActiveAdmin::SortableTree
       collection_action :sort, :method => :post do
         resource_name = active_admin_config.resource_name.to_s.underscore.parameterize('_')
 
-        records = params[resource_name].inject({}) do |res, (resource, parent_resource)|
-          res[resource_class.find(resource)] = resource_class.find(parent_resource) rescue nil
-          res
-        end
+        records = resource_class.where(id: params[resource_name].flatten.uniq).index_by{|record| record.id.to_s}
+
         errors = []
         ActiveRecord::Base.transaction do
-          records.each_with_index do |(record, parent_record), position|
-            record.send "#{options[:sorting_attribute]}=", position
-            if options[:tree]
-              record.send "#{options[:parent_method]}=", parent_record.nil? ? nil : parent_record.reload
-            end
-            errors << {record.id => record.errors} if !record.save
+          params[resource_name].each_with_index do |(resource, parent_resource), position|
+            if records[resource]
+              records[resource].send "#{options[:sorting_attribute]}=", position
+              if options[:tree]
+                records[resource].send "#{options[:parent_method]}=", records[parent_resource]
+              end
+            end 
+            errors << {records[resource].id => records[resource].errors} if !records[resource].save
           end
         end
         if errors.empty?
