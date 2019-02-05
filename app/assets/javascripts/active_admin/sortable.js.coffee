@@ -19,8 +19,13 @@ window.saveTree = ->
     .done ->
       alert 'Saved!'
       ActiveAdminSortableEvent.trigger('ajaxDone')
-    .fail ->
-      alert 'NOT SAVED!'
+    .fail (jqXHR) ->
+      message = 'NOT SAVED!'
+      try
+        # Expects error object with message attribute
+        message = message + '\n' + JSON.parse(jqXHR.responseText).error.message
+      catch e
+      alert message
       ActiveAdminSortableEvent.trigger('ajaxFail')
 
 
