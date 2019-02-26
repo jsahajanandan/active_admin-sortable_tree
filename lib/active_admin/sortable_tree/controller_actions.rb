@@ -41,7 +41,7 @@ module ActiveAdmin::SortableTree
         if errors.empty?
           head 200
         else
-          render json: errors, status: 422
+          render json: { error: { message: errors.map{|e| "#{e.keys.first} - #{e.values.first.full_messages.to_sentence}"}.join("\n") } }, status: 422
         end
       end
 
