@@ -1,4 +1,4 @@
-#= require jquery-ui/widgets/sortable
+#= require jquery-ui/sortable
 #= require jquery.mjs.nestedSortable
 
 
