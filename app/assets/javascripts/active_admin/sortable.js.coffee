@@ -6,28 +6,28 @@ window.saveTree = ->
   item = $('.index_as_sortable [data-sortable-type]').first();
   item.nestedSortable("disable")
   $.ajax
-    url: item.data("sortable-url")
-    type: "post"
-    data: item.nestedSortable("serialize")
+      url: item.data("sortable-url")
+      type: "post"
+      data: item.nestedSortable("serialize")
     .always ->
-    item.find('.item').each (index) ->
-      if index % 2
-        item.removeClass('odd').addClass('even')
-      else
-        item.removeClass('even').addClass('odd')
-    item.nestedSortable("enable")
-    ActiveAdminSortableEvent.trigger('ajaxAlways')
+      item.find('.item').each (index) ->
+        if index % 2
+          item.removeClass('odd').addClass('even')
+        else
+          item.removeClass('even').addClass('odd')
+      item.nestedSortable("enable")
+      ActiveAdminSortableEvent.trigger('ajaxAlways')
     .done ->
-    alert 'Saved!'
-    ActiveAdminSortableEvent.trigger('ajaxDone')
+      alert 'Saved!'
+      ActiveAdminSortableEvent.trigger('ajaxDone')
     .fail (jqXHR) ->
-    message = 'NOT SAVED!'
-    try
-# Expects error object with message attribute
-      message = message + '\n' + JSON.parse(jqXHR.responseText).error.message
-    catch e
-    alert message
-    ActiveAdminSortableEvent.trigger('ajaxFail')
+      message = 'NOT SAVED!'
+      try
+        # Expects error object with message attribute
+        message = message + '\n' + JSON.parse(jqXHR.responseText).error.message
+      catch e
+      alert message
+      ActiveAdminSortableEvent.trigger('ajaxFail')
 
 window.ActiveAdminSortableEvent = do ->
   eventToListeners = {}
