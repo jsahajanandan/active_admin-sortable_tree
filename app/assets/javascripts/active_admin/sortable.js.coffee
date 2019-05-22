@@ -1,6 +1,34 @@
 #= require jquery-ui/widgets/sortable
 #= require jquery.mjs.nestedSortable
 
+
+window.saveTree = ->
+  item = $('.index_as_sortable [data-sortable-type]').first();
+  item.nestedSortable("disable")
+  $.ajax
+    url: item.data("sortable-url")
+    type: "post"
+    data: item.nestedSortable("serialize")
+    .always ->
+    item.find('.item').each (index) ->
+      if index % 2
+        item.removeClass('odd').addClass('even')
+      else
+        item.removeClass('even').addClass('odd')
+    item.nestedSortable("enable")
+    ActiveAdminSortableEvent.trigger('ajaxAlways')
+    .done ->
+    alert 'Saved!'
+    ActiveAdminSortableEvent.trigger('ajaxDone')
+    .fail (jqXHR) ->
+    message = 'NOT SAVED!'
+    try
+# Expects error object with message attribute
+      message = message + '\n' + JSON.parse(jqXHR.responseText).error.message
+    catch e
+    alert message
+    ActiveAdminSortableEvent.trigger('ajaxFail')
+
 window.ActiveAdminSortableEvent = do ->
   eventToListeners = {}
 
@@ -52,21 +80,21 @@ $ ->
       toleranceElement: '> div'
       isTree: true
       startCollapsed: $this.data("start-collapsed")
-      update: ->
-        $this.nestedSortable("disable")
-        $.ajax
-          url: $this.data("sortable-url")
-          type: "post"
-          data: $this.nestedSortable("serialize")
-        .always ->
-          $this.find('.item').each (index) ->
-            if index % 2
-              $(this).removeClass('odd').addClass('even')
-            else
-              $(this).removeClass('even').addClass('odd')
-          $this.nestedSortable("enable")
-          ActiveAdminSortableEvent.trigger('ajaxAlways')
-        .done ->
-          ActiveAdminSortableEvent.trigger('ajaxDone')
-        .fail ->
-          ActiveAdminSortableEvent.trigger('ajaxFail')
+#      update: ->
+#        $this.nestedSortable("disable")
+#        $.ajax
+#          url: $this.data("sortable-url")
+#          type: "post"
+#          data: $this.nestedSortable("serialize")
+#        .always ->
+#          $this.find('.item').each (index) ->
+#            if index % 2
+#              $(this).removeClass('odd').addClass('even')
+#            else
+#              $(this).removeClass('even').addClass('odd')
+#          $this.nestedSortable("enable")
+#          ActiveAdminSortableEvent.trigger('ajaxAlways')
+#        .done ->
+#          ActiveAdminSortableEvent.trigger('ajaxDone')
+#        .fail ->
+#          ActiveAdminSortableEvent.trigger('ajaxFail')
