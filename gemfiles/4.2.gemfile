@@ -1,0 +1,11 @@
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'ancestry'
+gem 'sqlite3'
+
+gem 'activeadmin'
+gem 'devise'
+gem 'rails', '~> 4.2.0'
+gem 'sass-rails'
+
+# vim: ft=ruby

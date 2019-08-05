@@ -1,5 +1,5 @@
 module ActiveAdmin
   module SortableTree
-    VERSION = "0.3.2"
+    VERSION = "2.0.0"
   end
 end
