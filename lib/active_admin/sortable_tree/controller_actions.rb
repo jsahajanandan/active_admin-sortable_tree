@@ -23,11 +23,12 @@ module ActiveAdmin::SortableTree
       collection_action :sort, method: :post do
         resource_name = ActiveAdmin::SortableTree::Compatibility.normalized_resource_name(active_admin_config.resource_name)
 
-        records = resource_class.where(id: params[resource_name].flatten.uniq).index_by { |record| record.id.to_s }
+        resource_map = params[resource_name].to_unsafe_h
+        records = resource_class.where(id: resource_map.flatten.uniq).index_by { |record| record.id.to_s }
 
         errors = []
         ActiveRecord::Base.transaction do
-          params[resource_name].each_with_index do |(resource, parent_resource), position|
+          resource_map.each_with_index do |(resource, parent_resource), position|
             if records[resource]
               records[resource].send "#{options[:sorting_attribute]}=", position
               if options[:tree]
